@@ -4,13 +4,20 @@ var fs = require('fs');
 var path = require('path');
 module.exports.setup = function (reportPath, nemo, callback) {
   nemo.perfectomobile = {
-    getReport: function() {
-      var fname = arguments[0];
+    getReport: function(_fname) {
+      var type, fname;
+      if (_fname) {
+        type = _fname.substr(_fname.lastIndexOf('.') + 1, _fname.length);
+        fname = _fname;
+      } else {
+        type = 'html';
+      }
+
       return nemo.perfectomobile.getCapsString().then(function (capsString) {
         if (!fname) {
-          fname = capsString + (Date.now()) + '.html';
+          fname = capsString + (Date.now()) + '.' + type;
         }
-        return nemo.driver.executeScript('mobile:report:download', {type:'html'}).then(function(val)
+        return nemo.driver.executeScript('mobile:report:download', {'type':type}).then(function(val)
           {
             var buf = new Buffer(val, 'base64');
             var d = nemo.wd.promise.defer();
