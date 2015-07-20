@@ -1,6 +1,13 @@
 # nemo-perfectomobile
 PerfectoMobile plugin for NemoJS
 
+## Pre-requisites
+
+A running `nemo@1.x` installation. The remainder of this document assumes you are familiar with installing/configuring/using 
+Nemo plugins.
+
+If you are new to Nemo, please start here: [https://nemo.js.org](https://nemo.js.org)
+
 ## Installation
 
 In your project where Nemo is already installed:
