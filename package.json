@@ -1,6 +1,6 @@
 {
   "name": "nemo-perfectomobile",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "PerfectoMobile plugin for NemoJS",
   "main": "index.js",
   "scripts": {
