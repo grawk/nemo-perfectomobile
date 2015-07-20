@@ -13,26 +13,28 @@ module.exports.setup = function (reportPath, nemo, callback) {
         type = 'html';
       }
 
-      return nemo.perfectomobile.getCapsString().then(function (capsString) {
-        if (!fname) {
-          fname = capsString + (Date.now()) + '.' + type;
-        }
-        return nemo.driver.executeScript('mobile:report:download', {'type':type}).then(function(val)
-          {
-            var buf = new Buffer(val, 'base64');
-            var d = nemo.wd.promise.defer();
-            var fileName = path.resolve(reportPath, fname);
-            fs.writeFile(fileName, buf.toString(), {encoding: 'utf8'}, function (err) {
-              if (err) {
-                console.log('report error!');
-                return d.reject(err);
-              }
-              d.fulfill(fileName);
-            });
-            return d.promise;
+      return nemo.driver.close().then(function () {
+        nemo.perfectomobile.getCapsString().then(function (capsString) {
+          if (!fname) {
+            fname = capsString + (Date.now()) + '.' + type;
           }
-        );
+          return nemo.driver.executeScript('mobile:report:download', {'type':type}).then(function(val)
+            {
+              var buf = new Buffer(val, 'base64');
+              var d = nemo.wd.promise.defer();
+              var fileName = path.resolve(reportPath, fname);
+              fs.writeFile(fileName, buf.toString(), {encoding: 'utf8'}, function (err) {
+                if (err) {
+                  return d.reject(err);
+                }
+                d.fulfill(fileName);
+              });
+              return d.promise;
+            }
+          );
+        });
       });
+
 
     },
     getCapsString: function() {
